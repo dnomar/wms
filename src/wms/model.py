@@ -10,14 +10,22 @@ from typing import List
 class Product:
     sku: str
     description: str
-    qty: int
-    weight: float  # kg
     volume: float  # m3
+    weight: float  # kg
+    qty: float
 
 
 @dataclass
 class OrderLine(Product):
     reference: str
+
+    @property
+    def total_weight(self): return self.qty*self.weight
+
+    @property
+    def total_volume(self): return self.qty*self.volume
+
+
 
 
 '''
@@ -28,11 +36,11 @@ availables in %
 
 
 class WhSpace:
-    def __init__(self, reference: str, max_weigth: int, products: List[Product], max_vol: int):
+    def __init__(self, reference: str, products: List[Product], max_vol: int, max_weigth: int):
         self.ref = reference
-        self.max_weight = max_weigth
         self.products = products
         self.max_vol = max_vol
+        self.max_weight = max_weigth
 
     @property
     def available_weight(self):
@@ -43,7 +51,11 @@ class WhSpace:
         return 0.5
 
     def add(self, line: OrderLine):
-        self.products.append(Product(line.sku, line.description, line.qty, line.weight, line.volume))
+        self.products.append(Product(sku=line.sku,
+                                     description=line.description,
+                                     qty=line.qty,
+                                     weight=line.weight,
+                                     volume=line.volume))
 
     def empty(self):
         self.products.clear()
@@ -67,12 +79,12 @@ def allocate(line: OrderLine, space: WhSpace):
 def deallocate(orderline, space: WhSpace):
     for product in space.products:
         if product.sku == orderline.sku:
-            if product.qty == orderline.sku:
+            if product.qty == orderline.qty:
                 space.products.remove(orderline.sku)
-            elif product.qty < orderline.sku:
+            elif product.qty < orderline.qty:
                 raise ValueError("El producto {orderline.sku} excede la"
                                  " cantidad disponible en el espacio")
-            product.sku = product.sku-orderline
+            product.qty = product.qty-orderline.qty
 
 
 class abstractWarehouse(ABC):
@@ -106,7 +118,7 @@ class FakeWarehouse(abstractWarehouse):
 
     def delete(self, reference: str):
         for space in self.spaces:
-            if not space:
+            if not space.products:
                 self.spaces.remove(reference)
             else:
                 raise NotEmpty(f"Espacio {space.ref} no esta vacio")
