@@ -11,8 +11,8 @@ class Product:
     sku: str
     description: str
     qty: int
-    weight: float #kg
-    volume: float #m3
+    weight: float  # kg
+    volume: float  # m3
 
 
 @dataclass
@@ -45,8 +45,13 @@ class WhSpace:
     def add(self, line: OrderLine):
         self.products.append(Product(line.sku, line.description, line.qty, line.weight, line.volume))
 
+    def empty(self):
+        self.products.clear()
 
 class CantBeAllocated(Exception):
+    pass
+
+class NotEmpty(Exception):
     pass
 
 
@@ -60,7 +65,14 @@ def allocate(line: OrderLine, space: WhSpace):
 
 
 def deallocate(orderline, space: WhSpace):
-    pass
+    for product in space.products:
+        if product.sku == orderline.sku:
+            if product.qty == orderline.sku:
+                space.products.remove(orderline.sku)
+            elif product.qty < orderline.sku:
+                raise ValueError("El producto {orderline.sku} excede la"
+                                 " cantidad disponible en el espacio")
+            product.sku = product.sku-orderline
 
 
 class abstractWarehouse(ABC):
@@ -76,3 +88,28 @@ class abstractWarehouse(ABC):
 
     def get_all(self):
         return NotImplementedError("Metodo no Implementado")
+
+
+class FakeWarehouse(abstractWarehouse):
+
+    def __init__(self, reference: str):
+        self.ref = reference
+        self.spaces = list()
+
+    def add(self, reference: str):
+        self.spaces.append(reference)
+
+    def get(self, reference: str):
+        for space in self.spaces:
+            if reference == space.ref:
+                return space
+
+    def delete(self, reference: str):
+        for space in self.spaces:
+            if not space:
+                self.spaces.remove(reference)
+            else:
+                raise NotEmpty(f"Espacio {space.ref} no esta vacio")
+
+    def get_all(self):
+        return self.spaces
