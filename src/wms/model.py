@@ -20,12 +20,10 @@ class OrderLine(Product):
     reference: str
 
     @property
-    def total_weight(self): return self.qty*self.weight
+    def total_weight(self): return self.qty * self.weight
 
     @property
-    def total_volume(self): return self.qty*self.volume
-
-
+    def total_volume(self): return self.qty * self.volume
 
 
 '''
@@ -44,11 +42,17 @@ class WhSpace:
 
     @property
     def available_weight(self):
-        return 50
+        total_weight = 0
+        for product in self.products:
+            total_weight = total_weight + (product.weight * product.qty)
+        return self.max_weight - total_weight
 
     @property
     def available_vol(self):
-        return 0.5
+        total_volume = 0
+        for product in self.products:
+            total_volume = total_volume + (product.volume * product.qty)
+        return self.max_vol - total_volume
 
     def add(self, line: OrderLine):
         self.products.append(Product(sku=line.sku,
@@ -60,18 +64,27 @@ class WhSpace:
     def empty(self):
         self.products.clear()
 
+    @property
+    def prods_qty(self):
+        total_prods = 0
+        for product in self.products:
+            total_prods = total_prods + product.qty
+        return total_prods
+
+
 class CantBeAllocated(Exception):
     pass
+
 
 class NotEmpty(Exception):
     pass
 
 
 def allocate(line: OrderLine, space: WhSpace):
-    if line.volume > space.available_vol:
-        raise CantBeAllocated(f'el volumen del sku {line.sku} excede el volumen disponible en el espacio')
-    elif line.weight > space.available_weight:
-        raise CantBeAllocated(f'el peso del sku {line.sku} excede el peso disponible en el espacio')
+    if line.total_volume > space.available_vol:
+        raise CantBeAllocated(f'el volumen del sku {line.reference} excede el volumen disponible en el espacio')
+    elif line.total_weight > space.available_weight:
+        raise CantBeAllocated(f'el peso del sku {line.reference} excede el peso disponible en el espacio')
     else:
         space.add(line)
 
@@ -80,11 +93,12 @@ def deallocate(orderline, space: WhSpace):
     for product in space.products:
         if product.sku == orderline.sku:
             if product.qty == orderline.qty:
-                space.products.remove(orderline.sku)
+                space.products.remove(product)
             elif product.qty < orderline.qty:
                 raise ValueError("El producto {orderline.sku} excede la"
                                  " cantidad disponible en el espacio")
-            product.qty = product.qty-orderline.qty
+            product.qty = product.qty - orderline.qty
+
 
 
 class abstractWarehouse(ABC):
