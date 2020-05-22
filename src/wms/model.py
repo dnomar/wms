@@ -26,13 +26,6 @@ class OrderLine(Product):
     def total_volume(self): return self.qty * self.volume
 
 
-'''
-max_weight in kg
-max_vol in m3
-availables in %
-'''
-
-
 class WhSpace:
     def __init__(self, reference: str, products: List[Product], max_vol: int, max_weigth: int):
         self.ref = reference
@@ -80,28 +73,11 @@ class NotEmpty(Exception):
     pass
 
 
-def allocate(line: OrderLine, space: WhSpace):
-    if line.total_volume > space.available_vol:
-        raise CantBeAllocated(f'el volumen del sku {line.reference} excede el volumen disponible en el espacio')
-    elif line.total_weight > space.available_weight:
-        raise CantBeAllocated(f'el peso del sku {line.reference} excede el peso disponible en el espacio')
-    else:
-        space.add(line)
-
-
-def deallocate(orderline, space: WhSpace):
-    for product in space.products:
-        if product.sku == orderline.sku:
-            if product.qty == orderline.qty:
-                space.products.remove(product)
-            elif product.qty < orderline.qty:
-                raise ValueError("El producto {orderline.sku} excede la"
-                                 " cantidad disponible en el espacio")
-            product.qty = product.qty - orderline.qty
 
 
 
-class abstractWarehouse(ABC):
+
+class AbstractWarehouse(ABC):
 
     def add(self, reference: str):
         return NotImplementedError("Metodo no Implementado")
@@ -116,7 +92,7 @@ class abstractWarehouse(ABC):
         return NotImplementedError("Metodo no Implementado")
 
 
-class FakeWarehouse(abstractWarehouse):
+class FakeWarehouse(AbstractWarehouse):
 
     def __init__(self, reference: str):
         self.ref = reference

@@ -1,27 +1,8 @@
-from src.wms.model import OrderLine, WhSpace, allocate, \
-    CantBeAllocated, Product, FakeWarehouse, NotEmpty, deallocate
+from src.wms.model import OrderLine, WhSpace, \
+    CantBeAllocated, Product, FakeWarehouse, NotEmpty
+from src.wms.service import allocate, deallocate
 import pytest
-import uuid
-
-
-def random_suffix():
-    return uuid.uuid4().hex[:6]
-
-
-def random_sku(name=''):
-    return f'sku-{name}-{random_suffix()}'
-
-
-def random_product(name=''):
-    return f'product-{name}-{random_suffix()}'
-
-
-def random_orderid(name=''):
-    return f'order-{name}-{random_suffix()}'
-
-
-def random_space(name=''):
-    return f'space-{name}-{random_suffix()}'
+from test.randoms import *
 
 
 def test_orderline_volume():
@@ -38,8 +19,7 @@ def test_product_can_not_be_allocated_if_line_exceed_space_volume():
     line = OrderLine(sku='001-LENTES-002 ', description='LENTES TAQUILLEITOR', qty=10,
                      weight=48, volume=0.501, reference='LINEA ABSTRACTA')
     space = WhSpace(reference="A-25-2", max_weigth=50, products=[], max_vol=0.5)
-
-    with pytest.raises(CantBeAllocated, match=line.reference):
+    with pytest.raises(CantBeAllocated, match=line.sku):
         allocate(line, space)
 
 
@@ -47,11 +27,10 @@ def test_product_can_not_be_allocated_if_line_exceed_space_weight():
     line = OrderLine('001-LENTES-002 ', 'LENTES TAQUILLEITOR', 10, 50.1, 0.499, 'LINEA ABSTRACTA')
     space = WhSpace(reference="A-25-2", max_weigth=50, products=[], max_vol=0.5)
 
-    with pytest.raises(CantBeAllocated, match=line.reference):
+    with pytest.raises(CantBeAllocated, match=line.sku):
         allocate(line, space)
 
 
-# REvisar.....
 def test_product_can_be_allocated():
     line = OrderLine(sku='001-LENTES-002', description='LENTES TAQUILLEITOR',
                      qty=10, volume=.499, weight=49.9, reference='LINEA ABSTRACTA')
@@ -98,7 +77,7 @@ def test_only_empty_space_could_be_unassigned():
         warehouse.delete(espacio1)
 
 
-def test_product_deallocation():
+def test_product_can_deallocate():
     warehouse = FakeWarehouse("Bodega 1")
     rnd_space_sku1 = random_space('space')
     espacio1 = WhSpace(reference=rnd_space_sku1, max_weigth=500,
@@ -110,6 +89,7 @@ def test_product_deallocation():
                       reference='LINEA ABSTRACTA 2')
     line3 = OrderLine(sku=random_sku("Ollas"), description='OLLAS TAQUILLEITOR', qty=1, volume=.499, weight=49.9,
                       reference='LINEA ABSTRACTA 3')
+
     allocate(line1, warehouse.get(rnd_space_sku1))
     allocate(line2, warehouse.get(rnd_space_sku1))
     allocate(line3, warehouse.get(rnd_space_sku1))
@@ -119,8 +99,14 @@ def test_product_deallocation():
                                                                            line3.qty * line3.weight))
     assert warehouse.get(rnd_space_sku1).available_vol == espacio1.max_vol - (line1.qty * line1.volume) - \
            (line2.qty * line2.volume) - (line3.qty * line3.volume)
-    #Modificar para probar todos los casos del dealocate cuando qty es mayor, igual y menor.
     deallocate(line1, warehouse.get(rnd_space_sku1))
     assert warehouse.get(rnd_space_sku1).prods_qty == line2.qty + line3.qty
-    deallocate(line2, warehouse.get(rnd_space_sku1))
-    assert warehouse.get(rnd_space_sku1).prods_qty  == line3.qty
+
+    deall_line = (OrderLine(line2.sku, line2.description, line2.volume, line2.weight, 2, "deall_line"))
+    deallocate(deall_line, warehouse.get(rnd_space_sku1))
+    assert warehouse.get(rnd_space_sku1).prods_qty == 4
+
+    deall_line2 = (OrderLine(line2.sku, line2.description, line2.volume, line2.weight, 20, "deall_line"))
+    with pytest.raises(ValueError, match=deall_line2.sku):
+        deallocate(deall_line2, warehouse.get(rnd_space_sku1))
+    assert warehouse.get(rnd_space_sku1).prods_qty == 4
