@@ -1,7 +1,6 @@
 import abc
 
-
-from src.wms.model import NotEmpty
+from src.wms.model import OrderLine, Warehouse
 
 
 class AbstractRepository(abc.ABC):
@@ -23,36 +22,35 @@ class AbstractRepository(abc.ABC):
 
 class FakeWarehouseRepository(AbstractRepository):
 
-    def __init__(self, reference: str):
-        self.ref = reference
-        self.spaces = list()
+    def __init__(self, reference:str):
+        self.warehouses = []
+        self.reference=reference
 
-    def add(self, reference: str):
-        self.spaces.append(reference)
+    def add(self, warehouse: Warehouse):
+        self.warehouses.append(warehouse)
 
     def get(self, reference: str):
-        for space in self.spaces:
-            if reference == space.ref:
-                return space
-
-    def delete(self, reference: str):
-        for space in self.spaces:
-            if not space.products:
-                self.spaces.remove(reference)
-            else:
-                raise NotEmpty(f"Espacio {space.ref} no esta vacio")
+        for wh in self.warehouses:
+            if reference == wh.ref:
+                return wh
 
     def get_all(self):
-        return self.spaces
+        return self.warehouses
 
 
 class FakeOrderLineRepository(AbstractRepository):
 
-    def __init__(self, session):
-        self.session = session
+    def __init__(self):
+        self.order_lines=[]
 
-    def add(self, reference: str):
-        pass
+    def add(self, orderline: OrderLine):
+        self.order_lines.append(orderline)
 
     def get(self, reference: str):
-        pass
+        for oline in self.order_lines:
+            if reference == oline.reference:
+                return oline
+
+    def get_all(self):
+        return self.order_lines
+
