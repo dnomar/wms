@@ -1,6 +1,6 @@
 import abc
 
-from src.wms.model import OrderLine, Warehouse
+from src.wms.domain.model import OrderLine, Warehouse
 
 
 class AbstractRepository(abc.ABC):

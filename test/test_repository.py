@@ -1,5 +1,5 @@
-from src.wms.repository import FakeOrderLineRepository
-from src.wms.model import OrderLine
+from src.wms.adapters.repository import FakeOrderLineRepository
+from src.wms.domain.model import OrderLine
 
 
 class FakeSession:

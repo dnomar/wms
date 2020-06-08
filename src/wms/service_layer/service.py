@@ -1,4 +1,4 @@
-from src.wms.model import OrderLine, CantBeAllocated, Space
+from src.wms.domain.model import OrderLine, CantBeAllocated, Space
 
 
 def allocate(line: OrderLine, space: Space):

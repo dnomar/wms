@@ -1,5 +1,5 @@
-from src.wms.events import DummyEventsRaiser
-from src.wms import messagebus, message
+from src.wms.domain.events import DummyEventsRaiser
+from src.wms.service_layer import messagebus
 from test.fakemail import FakeMail
 
 

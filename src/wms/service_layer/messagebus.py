@@ -1,5 +1,4 @@
-from typing import Type
-from src.wms import events
+from src.wms.domain import events
 from test.fakemail import FakeMail
 
 

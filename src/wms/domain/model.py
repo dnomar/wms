@@ -1,7 +1,3 @@
-# SLI WMS INTENTO 5000000...
-# #dimensiones en mm
-# #peso en kg
-from abc import ABC
 from dataclasses import dataclass
 from typing import List
 
@@ -60,7 +56,6 @@ class Space:
     def is_assigned(self):
         return self._assigned_to_warehouse
 
-
     @property
     def available_weight(self):
         total_weight = 0
@@ -116,4 +111,3 @@ class NotEmpty(Exception): pass
 
 
 class NotAssignedSpaceException(Exception): pass
-

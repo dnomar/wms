@@ -1,4 +1,4 @@
-from src.wms.message import AbstracMessage
+from src.wms.service_layer.message import AbstracMessage
 from test import randoms
 
 
