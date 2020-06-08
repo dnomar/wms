@@ -1,3 +1,4 @@
+from typing import Type
 from src.wms import events
 from test.fakemail import FakeMail
 

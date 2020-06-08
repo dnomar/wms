@@ -28,7 +28,11 @@ class UserCreated(Event):
 class DummyEventsRaiser:
 
     def __init__(self):
-        self.events = []
+        self._events = []
 
     def event_triggered(self, reference: str):
-        self.events.append(WarehouseCreated(wh_id=reference))
+        self._events.append(WarehouseCreated(wh_id=reference))
+
+    def get_all_events(self):
+        return self._events
+
