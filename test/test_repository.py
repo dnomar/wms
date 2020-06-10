@@ -1,18 +1,6 @@
 from src.wms.adapters.repository import FakeOrderLineRepository
 from src.wms.domain.model import OrderLine
-
-
-class FakeSession:
-
-    def __init__(self):
-        self._commited = False
-
-    def commit(self):
-        self._commited = True
-        return self._commited
-
-    def rollback(self):
-        pass
+from test.unit.fakes.fake_session import FakeSession
 
 
 def test_repository_can_save_orderline():

@@ -18,14 +18,14 @@ class Event:
 
 @dataclass
 class WarehouseCreated(Event):
-    wh_id: str
+    wh_name: str
 
 
 @dataclass
 class UserCreated(Event):
     event_id: str
 
-class DummyEventsRaiser:
+'''class DummyEventsRaiser:
 
     def __init__(self):
         self._events = []
@@ -34,5 +34,5 @@ class DummyEventsRaiser:
         self._events.append(WarehouseCreated(wh_id=reference))
 
     def get_all_events(self):
-        return self._events
+        return self._events'''
 
