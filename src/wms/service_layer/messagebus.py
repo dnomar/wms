@@ -1,4 +1,5 @@
 from typing import Union
+
 from src.wms.domain import events, commands
 from src.wms.service_layer import handlers
 from src.wms.service_layer.unit_of_work import AbstractUnitOfWork
@@ -17,7 +18,7 @@ def handle(message: Message, uow: AbstractUnitOfWork):
             for evnt in HANDLERS_EVENTS[type(msg)]:
                 evnt(msg)
         else:
-            raise NotEventOrCommandException(f"La instrucción {msg} no es un commando ni tampoco un evento")
+            raise NotEventOrCommandException(f'La instrucción {msg} no es un commando ni tampoco un evento')
 
 
 HANDLERS_EVENTS = {

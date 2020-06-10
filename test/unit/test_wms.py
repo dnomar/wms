@@ -1,7 +1,6 @@
 from src.wms.domain.model import OrderLine, Space, \
-    CantBeAllocated, NotEmpty, NotAssignedSpaceException
+    CantBeAllocated, NotEmpty, NotAssignedSpaceException, Warehouse
 from src.wms.service_layer.service import allocate, deallocate
-from src.wms.adapters.repository import Warehouse
 import pytest
 from test.randoms import *
 
