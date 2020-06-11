@@ -82,26 +82,27 @@ class Warehouse:
 
     def __init__(self, wh_reference: str):
         self.wh_ref = wh_reference
-        self.spaces = []
+        self.allocated_spaces = []
+
 
     def add_space(self, space: Space):
         space.space_assigned()
-        self.spaces.append(space)
+        self.allocated_spaces.append(space)
 
     def get_space(self, space_reference: str):
-        for space in self.spaces:
+        for space in self.allocated_spaces:
             if space_reference == space.ref:
                 return space
 
     def delete_space(self, space_reference: str):
-        for space in self.spaces:
+        for space in self.allocated_spaces:
             if not space.list_prod():
-                self.spaces.remove(space_reference)
+                self.allocated_spaces.remove(space_reference)
             else:
                 raise NotEmpty(f"Espacio {space.ref} no esta vacio")
 
-    def list_spaces(self):
-        return self.spaces
+    def list_allocated_spaces(self):
+        return self.allocated_spaces
 
 
 class CantBeAllocated(Exception): pass

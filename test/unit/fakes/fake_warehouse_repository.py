@@ -12,7 +12,7 @@ class FakeWarehouseRepository(AbstractRepository):
 
     def get(self, reference: str):
         for wh in self.warehouses:
-            if reference == wh.ref:
+            if reference == wh.wh_ref:
                 return wh
 
     def get_all(self):

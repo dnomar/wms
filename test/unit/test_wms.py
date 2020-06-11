@@ -60,14 +60,14 @@ def test_only_empty_space_can_be_unassigned_from_a_warehouse():
     warehouse = Warehouse("Bodega 1")
     rnd_space_sku1 = random_space('o1')
     rnd_space_sku2 = random_space('o2')
-    espacio1 = Space(reference=rnd_space_sku1, max_weigth=50, max_vol=0.5)
-    espacio2 = Space(reference=rnd_space_sku2, max_weigth=50, max_vol=0.5)
+    espacio1 = Space(reference=rnd_space_sku1, max_weigth=50, max_vol=1)
+    espacio2 = Space(reference=rnd_space_sku2, max_weigth=50, max_vol=1)
 
     warehouse.add_space(espacio1)
     warehouse.add_space(espacio2)
-    assert warehouse.list_spaces() == list([espacio1, espacio2])
+    assert warehouse.list_allocated_spaces() == list([espacio1, espacio2])
     warehouse.delete_space(espacio2)
-    assert warehouse.list_spaces() == list([espacio1])
+    assert warehouse.list_allocated_spaces() == list([espacio1])
 
 
 def test_only_empty_space_could_be_unassigned():

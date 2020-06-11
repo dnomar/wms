@@ -1,5 +1,4 @@
 from dataclasses import dataclass
-import abc
 import time
 import datetime
 
@@ -25,14 +24,8 @@ class WarehouseCreated(Event):
 class UserCreated(Event):
     event_id: str
 
-'''class DummyEventsRaiser:
+@dataclass
+class SpaceAllocated(Event):
+    space_ref: str
 
-    def __init__(self):
-        self._events = []
-
-    def event_triggered(self, reference: str):
-        self._events.append(WarehouseCreated(wh_id=reference))
-
-    def get_all_events(self):
-        return self._events'''
 
