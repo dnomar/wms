@@ -1,7 +1,6 @@
 from src.wms.domain import events, commands
-from src.wms.domain.model import Space, Warehouse
+from src.wms.domain.model import Space, Warehouse, OrderLine
 from src.wms.service_layer import unit_of_work
-from test.unit.fakes.fake_warehouse_repository import FakeWarehouseRepository
 from test.unit.fakes.fakemail import FakeMail
 
 
@@ -27,3 +26,20 @@ def allocate_space(cmd: commands.AllocateSpace, uow: unit_of_work.AbstractUnitOf
         uow.logger.add(events.SpaceAllocated(
             space_ref=cmd.space_reference
         ))
+
+
+def allocate_product(cmd: commands.AllocateProduct, uow: unit_of_work.AbstractUnitOfWork):
+    order_line = OrderLine(
+        sku=cmd.prod_sku,
+        description=cmd.prod_desc,
+        volume_unit= cmd.unit_volume,
+        weight_unit=cmd.unit_weight,
+        qty=cmd.qty,
+        reference=cmd.ord_line_ref
+    )
+    uow.warehouses.get(cmd.warehouse_ref).get_space(cmd.space_ref).allocate(order_line)
+    uow.logger.add(events.OrderLineAllocated(
+        order_line_ref=cmd.ord_line_ref,
+        space_ref=cmd.space_ref,
+        warehouse_ref=cmd.warehouse_ref
+    ))

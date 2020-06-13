@@ -28,7 +28,8 @@ HANDLERS_EVENTS = {
 
 HANDLER_COMMANDS = {
     commands.CreateWarehouse: [handlers.create_warehouse],
-    commands.AllocateSpace: [handlers.allocate_space]
+    commands.AllocateSpace: [handlers.allocate_space],
+    commands.AllocateProduct: [handlers.allocate_product]
 }
 
 class NotEventOrCommandException(Exception):

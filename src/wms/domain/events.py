@@ -28,4 +28,10 @@ class UserCreated(Event):
 class SpaceAllocated(Event):
     space_ref: str
 
+@dataclass
+class OrderLineAllocated(Event):
+    order_line_ref:str
+    space_ref:str
+    warehouse_ref:str
+
 

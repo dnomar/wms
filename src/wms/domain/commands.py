@@ -19,6 +19,17 @@ class AllocateSpace(Command):
     max_vol: float
 
 
+@dataclass
+class AllocateProduct(Command):
+    space_ref: str
+    prod_sku: str
+    prod_desc: str
+    unit_volume: int
+    unit_weight: int
+    qty: int
+    ord_line_ref: str
+    warehouse_ref:str
+
 
 
 
