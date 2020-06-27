@@ -1,5 +1,7 @@
 from src.wms.domain import events, commands
-from src.wms.domain.model import Space, Warehouse, OrderLine
+from src.wms.domain.model.OrderLine import OrderLine
+from src.wms.domain.model.Space import Space
+from src.wms.domain.model.Warehouse import Warehouse
 from src.wms.service_layer import unit_of_work
 from test.unit.fakes.fakemail import FakeMail
 

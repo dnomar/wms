@@ -1,5 +1,5 @@
 from src.wms.adapters.repository import AbstractRepository
-from src.wms.domain.model import Warehouse
+from src.wms.domain.model.Warehouse import Warehouse
 
 
 class FakeWarehouseRepository(AbstractRepository):
@@ -10,11 +10,10 @@ class FakeWarehouseRepository(AbstractRepository):
     def add(self, warehouse: Warehouse):
         self.warehouses.append(warehouse)
 
-    def get(self, reference: str):
+    def get(self, reference: str) -> Warehouse:
         for wh in self.warehouses:
-            if reference == wh.wh_ref:
+            if reference == wh.get_warehouse_ref():
                 return wh
 
     def get_all(self):
         return self.warehouses
-

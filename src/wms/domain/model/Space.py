@@ -1,25 +1,6 @@
-from dataclasses import dataclass
-from typing import List
-
-
-@dataclass
-class Product:
-    sku: str
-    description: str
-    volume_unit: float  # m3
-    weight_unit: float  # kg
-    qty: float
-
-
-@dataclass
-class OrderLine(Product):
-    reference: str
-
-    @property
-    def total_weight(self): return self.qty * self.weight_unit
-
-    @property
-    def total_volume(self): return self.qty * self.volume_unit
+from src.wms.domain.model.Exeptions import NotAssignedSpaceException
+from src.wms.domain.model.OrderLine import OrderLine
+from src.wms.domain.model.Product import Product
 
 
 class Space:
@@ -39,7 +20,7 @@ class Space:
     def remove_product(self, product: Product):
         self._products.remove(product)
 
-    def get_product(self, sku: str):
+    def get_product(self, sku: str) -> Product:
         for prod in self._products:
             if prod.sku == sku:
                 return prod
@@ -76,39 +57,3 @@ class Space:
         for product in self._products:
             total_prods = total_prods + product.qty
         return total_prods
-
-
-class Warehouse:
-
-    def __init__(self, wh_reference: str):
-        self.wh_ref = wh_reference
-        self.allocated_spaces = []
-
-
-    def add_space(self, space: Space):
-        space.space_assigned()
-        self.allocated_spaces.append(space)
-
-    def get_space(self, space_reference: str):
-        for space in self.allocated_spaces:
-            if space_reference == space.ref:
-                return space
-
-    def delete_space(self, space_reference: str):
-        for space in self.allocated_spaces:
-            if not space.list_prod():
-                self.allocated_spaces.remove(space_reference)
-            else:
-                raise NotEmpty(f"Espacio {space.ref} no esta vacio")
-
-    def list_allocated_spaces(self):
-        return self.allocated_spaces
-
-
-class CantBeAllocated(Exception): pass
-
-
-class NotEmpty(Exception): pass
-
-
-class NotAssignedSpaceException(Exception): pass

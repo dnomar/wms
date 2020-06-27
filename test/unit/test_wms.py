@@ -1,8 +1,12 @@
-from src.wms.domain.model import OrderLine, Space, \
-    CantBeAllocated, NotEmpty, NotAssignedSpaceException, Warehouse
+
+from src.wms.domain.model.Exeptions import CantBeAllocated, NotEmpty, NotAssignedSpaceException, EmptyWarehouseReference
+from src.wms.domain.model.OrderLine import OrderLine
+from src.wms.domain.model.Space import Space
+from src.wms.domain.model.Warehouse import Warehouse
 from src.wms.service_layer.service import allocate, deallocate
 import pytest
 from test.randoms import *
+from test.unit.fakes.fake_warehouse_repository import FakeWarehouseRepository
 
 
 def test_calc_orderline_total_volume_and_total_weight():
@@ -74,10 +78,10 @@ def test_only_empty_space_could_be_unassigned():
     warehouse = Warehouse("Bodega 1")
     rnd_space_sku1 = random_space('o1')
     rnd_prod_sku = random_product('TP')
-    espacio1 = Space(reference= rnd_space_sku1, max_vol= 0.5, max_weigth= 50)
+    espacio1 = Space(reference=rnd_space_sku1, max_vol=0.5, max_weigth=50)
     warehouse.add_space(espacio1)
-    allocate(OrderLine(sku= rnd_prod_sku, description= "TERRIBLE PROD", qty= 13, volume_unit= 0.01,
-                       weight_unit= 0.5, reference= "OL-2"), warehouse.get_space(espacio1.ref))
+    allocate(OrderLine(sku=rnd_prod_sku, description="TERRIBLE PROD", qty=13, volume_unit=0.01,
+                       weight_unit=0.5, reference="OL-2"), warehouse.get_space(espacio1.ref))
 
     with pytest.raises(NotEmpty, match=espacio1.ref):
         warehouse.delete_space(espacio1)
@@ -119,3 +123,20 @@ def test_product_can_deallocate():
     with pytest.raises(ValueError, match=deall_line2.sku):
         deallocate(deall_line2, warehouse.get_space(rnd_space_sku1))
     assert warehouse.get_space(rnd_space_sku1).prods_qty == 4
+
+
+def test_update_warehouse_name_in_repository():
+    # Given
+    fakeWhRep = FakeWarehouseRepository()
+    warehouse1 = Warehouse('Bodega-1')
+    space1 = Space("space-1", 5, 10)
+    warehouse1.add_space(space1)
+    order_line1 = OrderLine('1312-4', "producto de pruea", 1, 1, 2, "order line 1")
+    allocate(order_line1, space1)
+    fakeWhRep.add(warehouse1)
+    assert fakeWhRep.get('Bodega-1').get_warehouse_ref() == 'Bodega-1'
+    with pytest.raises(EmptyWarehouseReference):
+        fakeWhRep.get('Bodega-1').change_warehouse_ref('')
+    fakeWhRep.get('Bodega-1').change_warehouse_ref('Bodega-2')
+    assert fakeWhRep.get('Bodega-2').get_space('space-1').get_product('1312-4').description == "producto de pruea"
+

@@ -1,5 +1,5 @@
 import abc
-from src.wms.adapters import repository
+from src.wms.adapters import repository, file_exporter
 from test.unit.fakes.fake_warehouse_repository import FakeWarehouseRepository
 
 
@@ -26,3 +26,26 @@ class AbstractWarehouseUnitOfWork(AbstractUnitOfWork):
 
     def __exit__(self, *args):
         self.rollback()
+
+
+class AbstractExportUnitOfWork(abc.ABC):
+
+    @abc.abstractmethod
+    def write(self, content: str):
+        pass
+
+
+class TxtExportUnitOfWork(AbstractExportUnitOfWork):
+
+    def __init__(self, path_to_file: str, access_mode: str):
+        self.path = path_to_file
+        self.access_mode = access_mode
+
+    def __enter__(self):
+        self.file = open(self.path, self.access_mode)
+
+    def write(self, content):
+        self.file.write(content)
+
+    def __exit__(self, *args):
+        self.file.close()

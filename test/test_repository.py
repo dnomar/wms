@@ -1,4 +1,4 @@
-from src.wms.domain.model import OrderLine
+from src.wms.domain.model.OrderLine import OrderLine
 from test.unit.fakes.fake_orderline_repository import FakeOrderLineRepository
 from test.unit.fakes.fake_session import FakeSession
 

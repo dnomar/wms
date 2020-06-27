@@ -1,0 +1,1 @@
+{"wh_ref": "bodega-1", "allocated_spaces": []}

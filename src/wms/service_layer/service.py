@@ -1,4 +1,5 @@
-from src.wms.domain.model import OrderLine, CantBeAllocated, Space, Warehouse
+from src.wms.domain.model import OrderLine, Space
+from src.wms.domain.model.Exeptions import CantBeAllocated
 
 
 def allocate(line: OrderLine, space: Space):
@@ -18,3 +19,4 @@ def deallocate(line: OrderLine, space: Space):
             elif product.qty < line.qty:
                 raise ValueError(f'El producto {line.sku} excede la cantidad disponible en el espacio')
             product.qty = product.qty - line.qty
+
