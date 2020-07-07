@@ -1,9 +1,9 @@
-
-from src.wms.domain.model.Exeptions import CantBeAllocated, NotEmpty, NotAssignedSpaceException, EmptyWarehouseReference
-from src.wms.domain.model.OrderLine import OrderLine
-from src.wms.domain.model.Space import Space
-from src.wms.domain.model.Warehouse import Warehouse
-from src.wms.service_layer.service import allocate, deallocate
+from src.app.domain.model.Exeptions import CantBeAllocated, NotEmpty, NotAssignedSpaceException, EmptyWarehouseReference
+from src.app.domain.model.OrderLine import OrderLine
+from src.app.domain.model.Space import Space
+from src.app.domain.model.Warehouse import Warehouse
+from src.app.domain.model.Product import Product
+from src.app.service_layer.service import allocate, deallocate
 import pytest
 from test.randoms import *
 from test.unit.fakes.fake_warehouse_repository import FakeWarehouseRepository
@@ -140,3 +140,82 @@ def test_update_warehouse_name_in_repository():
     fakeWhRep.get('Bodega-1').change_warehouse_ref('Bodega-2')
     assert fakeWhRep.get('Bodega-2').get_space('space-1').get_product('1312-4').description == "producto de pruea"
 
+def test_product_to_dict():
+    data={ 
+        "sku": "sku-001",
+        "description": "articulo de prueba",
+        "volume_unit": 1,
+        "weight_unit": 0.1,
+        "qty": 5
+    }
+    test_prod=Product("sku-001", "articulo de prueba", 1, 0.1, 5)
+    assert data == test_prod.to_dict()
+
+def test_space_to_dict():
+    data= {
+            "reference": "espacio-1",
+            "max_volume": 100,
+            "max_weight": 100,
+            "productos": [
+                {
+                    "sku": "sku-001",
+                    "description": "articulo de prueba",
+                    "volume_unit": 1,
+                    "weight_unit": 0.1,
+                    "qty": 5
+                },
+                {
+                    "sku": "sku-002",
+                    "description": "articulo de prueba 2",
+                    "volume_unit": 0.5,
+                    "weight_unit": 0.05,
+                    "qty": 10
+                }
+            ]
+            }
+    wh = Warehouse("Bodega-1")
+    space = Space("espacio-1", 100, 100)
+    wh.add_space(space)    
+    orderline = OrderLine("sku-001", "articulo de prueba", 1, 0.1, 5, "o-l-1")
+    orderline2 = OrderLine("sku-002", "articulo de prueba 2", 0.5, 0.05, 10, "o-l-2")
+    allocate(orderline, wh.get_space('espacio-1'))
+    allocate(orderline2, wh.get_space('espacio-1'))
+    assert data == wh.list_allocated_spaces()[0].to_dict()
+
+
+
+def test_get_warehouse_master():
+    data = {
+        "wh_ref": "Bodega-1",
+        "allocated_spaces": [
+            {
+                "reference": "espacio-1",
+                "max_volume": 100,
+                "max_weight": 100,
+                "productos": [
+                    {
+                        "sku": "sku-001",
+                        "description": "articulo de prueba",
+                        "volume_unit": 1,
+                        "weight_unit": 0.1,
+                        "qty": 5
+                    },
+                   {
+                        "sku": "sku-002",
+                        "description": "articulo de prueba 2",
+                        "volume_unit": 0.5,
+                        "weight_unit": 0.05,
+                        "qty": 10
+                    }
+                ]
+            }
+        ]
+    }
+    wh = Warehouse("Bodega-1")
+    space = Space("espacio-1", 100, 100)
+    orderline = OrderLine("sku-001", "articulo de prueba", 1, 0.1, 5, "o-l-1")
+    orderline2 = OrderLine("sku-002", "articulo de prueba 2", 0.5, 0.05, 10, "o-l-2")
+    wh.add_space(space)
+    allocate(orderline, wh.get_space('espacio-1'))
+    allocate(orderline2, wh.get_space('espacio-1'))
+    assert wh.to_dict()==data

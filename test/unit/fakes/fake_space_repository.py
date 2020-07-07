@@ -1,5 +1,5 @@
-from src.wms.adapters.repository import AbstractRepository
-from src.wms.domain.model import Space
+from src.app.adapters.repository import AbstractRepository
+from src.app.domain.model import Space
 
 
 class FakeSpaceRepository(AbstractRepository):

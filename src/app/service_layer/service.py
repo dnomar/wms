@@ -1,5 +1,8 @@
-from src.wms.domain.model import OrderLine, Space
-from src.wms.domain.model.Exeptions import CantBeAllocated
+import json
+from src.app.domain.model import OrderLine
+from src.app.domain.model.Exeptions import CantBeAllocated
+from src.app.domain.model.Space import Space
+from src.app.domain.model.Warehouse import Warehouse
 
 
 def allocate(line: OrderLine, space: Space):
@@ -20,3 +23,6 @@ def deallocate(line: OrderLine, space: Space):
                 raise ValueError(f'El producto {line.sku} excede la cantidad disponible en el espacio')
             product.qty = product.qty - line.qty
 
+
+def get_wh_master(wh: Warehouse) -> str:
+    return wh.__dict__

@@ -1,5 +1,5 @@
-from src.wms.adapters.repository import AbstractRepository
-from src.wms.domain import events
+from src.app.adapters.repository import AbstractRepository
+from src.app.domain import events
 
 
 class FakeLogginRepository(AbstractRepository):

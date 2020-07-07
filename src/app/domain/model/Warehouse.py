@@ -1,5 +1,5 @@
-from src.wms.domain.model import Space
-from src.wms.domain.model.Exeptions import NotEmpty, EmptyWarehouseReference
+from src.app.domain.model import Space
+from src.app.domain.model.Exeptions import NotEmpty, EmptyWarehouseReference
 
 
 class Warehouse:
@@ -34,3 +34,16 @@ class Warehouse:
         if not new_reference_str.strip():
             raise EmptyWarehouseReference()
         self._wh_ref = new_reference_str
+
+    def spaces2dict(self, spaces_list:[])->[]:
+        spaces_dict=[]
+        for x in spaces_list:
+            spaces_dict.append(x.to_dict())
+        return spaces_dict 
+    
+    def to_dict(self)->dict:
+        data = {
+            "wh_ref": self._wh_ref,
+            "allocated_spaces": self.spaces2dict(self.allocated_spaces)
+        }
+        return data

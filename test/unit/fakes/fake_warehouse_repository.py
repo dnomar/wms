@@ -1,5 +1,5 @@
-from src.wms.adapters.repository import AbstractRepository
-from src.wms.domain.model.Warehouse import Warehouse
+from src.app.adapters.repository import AbstractRepository
+from src.app.domain.model.Warehouse import Warehouse
 
 
 class FakeWarehouseRepository(AbstractRepository):

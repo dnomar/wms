@@ -1,5 +1,5 @@
 import abc
-from src.wms.adapters import repository, file_exporter
+from src.app.adapters import repository, file_exporter
 from test.unit.fakes.fake_warehouse_repository import FakeWarehouseRepository
 
 

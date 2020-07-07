@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from src.wms.domain.model.Product import Product
+from src.app.domain.model.Product import Product
 
 
 @dataclass

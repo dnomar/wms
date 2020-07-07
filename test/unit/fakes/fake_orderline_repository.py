@@ -1,5 +1,5 @@
-from src.wms.adapters.repository import AbstractRepository
-from src.wms.domain.model import OrderLine
+from src.app.adapters.repository import AbstractRepository
+from src.app.domain.model import OrderLine
 
 
 class FakeOrderLineRepository(AbstractRepository):

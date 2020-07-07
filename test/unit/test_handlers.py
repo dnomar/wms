@@ -1,9 +1,7 @@
 import pytest
-from src.wms.domain import commands
-from src.wms.domain.model import Warehouse, Space, OrderLine
-from src.wms.service_layer import messagebus, service
-from test.unit.fakes.fake_warehouse_repository import FakeWarehouseRepository
-from src.wms.service_layer.messagebus import NotEventOrCommandException
+from src.app.domain import commands
+from src.app.service_layer import messagebus
+from src.app.service_layer.messagebus import NotEventOrCommandException
 from test.unit.fakes.fake_warehouse_unit_of_work import FakeWarehouseUnitOfWork
 
 

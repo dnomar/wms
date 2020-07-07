@@ -1,5 +1,5 @@
-from src.wms.adapters import repository
-from src.wms.service_layer.unit_of_work import AbstractWarehouseUnitOfWork
+from src.app.adapters import repository
+from src.app.service_layer.unit_of_work import AbstractWarehouseUnitOfWork
 from test.unit.fakes.fake_loggin_repository import FakeLogginRepository
 from test.unit.fakes.fake_warehouse_repository import FakeWarehouseRepository
 

@@ -1,15 +1,16 @@
-from src.wms.domain.model.Exeptions import NotAssignedSpaceException
-from src.wms.domain.model.OrderLine import OrderLine
-from src.wms.domain.model.Product import Product
+from src.app.domain.model.Exeptions import NotAssignedSpaceException
+from src.app.domain.model.OrderLine import OrderLine
+from src.app.domain.model.Product import Product
+import json
 
 
 class Space:
     def __init__(self, reference: str, max_vol: int, max_weigth: int):
         self.ref = reference
-        self._products = []  # List[Product]
         self.max_vol = max_vol
         self.max_weight = max_weigth
         self._assigned_to_warehouse = False
+        self._products = []  # List[Product]
 
     def allocate(self, line: OrderLine):
         if not self.is_assigned():
@@ -57,3 +58,20 @@ class Space:
         for product in self._products:
             total_prods = total_prods + product.qty
         return total_prods
+
+    def product2dict(self, prod_list:[])->[]:
+        prod_dict=[]
+        for x in prod_list:
+            prod_dict.append(x.to_dict())
+        return prod_dict               
+    
+    def to_dict(self)->dict:
+        data = {
+            "reference": self.ref,
+            "max_volume": self.max_vol,
+            "max_weight": self.max_weight,
+            "productos": self.product2dict(self._products)
+        }
+        return data
+
+

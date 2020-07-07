@@ -1,4 +1,4 @@
-from src.wms.adapters.message import AbstracMessage
+from src.app.adapters.message import AbstracMessage
 from test import randoms
 
 

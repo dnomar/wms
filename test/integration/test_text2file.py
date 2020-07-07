@@ -1,4 +1,4 @@
-from src.wms.service_layer.unit_of_work import TxtExportUnitOfWork
+from src.app.service_layer.unit_of_work import TxtExportUnitOfWork
 import os
 
 

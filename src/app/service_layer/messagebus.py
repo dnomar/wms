@@ -1,8 +1,7 @@
 from typing import Union
-
-from src.wms.domain import events, commands
-from src.wms.service_layer import handlers
-from src.wms.service_layer.unit_of_work import AbstractUnitOfWork
+from src.app.domain import events, commands
+from src.app.service_layer import handlers
+from src.app.service_layer.unit_of_work import AbstractUnitOfWork
 
 Message = Union[commands.Command, events.Event]
 
