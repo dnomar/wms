@@ -1,9 +1,7 @@
 from dataclasses import dataclass
 
-
 class Command:
     pass
-
 
 @dataclass
 class CreateWarehouse(Command):

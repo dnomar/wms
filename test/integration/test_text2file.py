@@ -1,4 +1,6 @@
-from src.app.service_layer.unit_of_work import TxtExportUnitOfWork
+import sys
+sys.path.append(r"C:\Users\van-gerald.olivares\Documents\08 Code\wms")
+from src.app.service.unit_of_work import TxtExportUnitOfWork
 import os
 
 
