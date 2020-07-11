@@ -13,7 +13,8 @@ def send_warehouse_created_notification(event: events.WarehouseCreated):
 
 def create_warehouse(cmd: commands.CreateWarehouse, uow: unit_of_work.AbstractUnitOfWork):
     with uow:
-        uow.warehouses.add(Warehouse(cmd.reference))
+        print(cmd.reference)
+        uow.repo.add(Warehouse(cmd.reference))
         uow.logger.add(events.WarehouseCreated(
             wh_name=cmd.reference
         ))

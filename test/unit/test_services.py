@@ -2,7 +2,7 @@ import pytest
 from src.app.domain import commands
 from src.app.service import messagebus
 from src.app.service.messagebus import NotEventOrCommandException
-from src.app.adapters.fakes.fake_warehouse_unit_of_work import FakeWarehouseUnitOfWork
+from src.app.service.unit_of_work import FakeWarehouseUnitOfWork
 
 
 def test_create_new_warehouse():

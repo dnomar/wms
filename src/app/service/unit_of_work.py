@@ -1,13 +1,17 @@
 import abc
 from src.app.adapters import repository, file_exporter
 from src.app.adapters.fakes.fake_warehouse_repository import FakeWarehouseRepository
+from src.app.adapters.repository import AbstractRepository
 
 
 class AbstractUnitOfWork(abc.ABC):
-    logger = repository.AbstractRepository
+    repo = repository.AbstractRepository
 
     def __exit__(self, *args):
         self.rollback()
+
+    def __enter__(self):
+        return self
 
     @abc.abstractmethod
     def commit(self):
@@ -49,3 +53,19 @@ class TxtExportUnitOfWork(AbstractExportUnitOfWork):
 
     def __exit__(self, *args):
         self.file.close()
+
+
+class FakeWarehouseUnitOfWork(AbstractUnitOfWork):
+
+    def __enter__(self):
+        self.repo=FakeWarehouseRepository()
+        return super().__enter__()
+        
+    def __exit__(self, *args):
+        pass
+
+    def commit(self):
+        pass
+
+    def rollback(self):
+        pass
