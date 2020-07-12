@@ -1,5 +1,6 @@
 from src.app.domain.space import Space
 from src.app.domain.exceptions import NotEmpty, EmptyWarehouseReference
+#from src.app.service import messagebus
 
 
 class Warehouse:
@@ -8,6 +9,9 @@ class Warehouse:
         self._wh_ref = wh_reference
         self.allocated_spaces = []
 
+    def create(self, wh_reference:str):
+        self.__init__(wh_reference)
+        
     def add_space(self, space: Space):
         space.space_assigned()
         self.allocated_spaces.append(space)

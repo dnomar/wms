@@ -5,6 +5,17 @@ from src.app.service.unit_of_work import AbstractUnitOfWork
 
 Message = Union[commands.Command, events.Event]
 
+HANDLERS_EVENTS = {
+    events.WarehouseCreated: [handlers.send_warehouse_created_notification],
+    events.UserCreated: [handlers.send_warehouse_created_notification],
+}
+
+HANDLER_COMMANDS = {
+    commands.CreateWarehouse: [handlers.create_warehouse],
+    commands.AllocateSpace: [handlers.allocate_space],
+    commands.AllocateProduct: [handlers.allocate_product]
+}
+
 
 def handle(message: Message, uow: AbstractUnitOfWork):
     queue = [message]
@@ -20,16 +31,6 @@ def handle(message: Message, uow: AbstractUnitOfWork):
             raise NotEventOrCommandException(f'La instrucción {msg} no es un commando ni tampoco un evento')
 
 
-HANDLERS_EVENTS = {
-    events.WarehouseCreated: [handlers.send_warehouse_created_notification],
-    events.UserCreated: [handlers.send_warehouse_created_notification],
-}
-
-HANDLER_COMMANDS = {
-    commands.CreateWarehouse: [handlers.create_warehouse],
-    commands.AllocateSpace: [handlers.allocate_space],
-    commands.AllocateProduct: [handlers.allocate_product]
-}
 
 class NotEventOrCommandException(Exception):
     pass

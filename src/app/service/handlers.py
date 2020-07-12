@@ -10,16 +10,16 @@ def send_warehouse_created_notification(event: events.WarehouseCreated):
     fkm = FakeMail()
     fkm.send("volivaresh@gmail.com", f"algo pal body {event.occurred_on}")
 
-
 def create_warehouse(cmd: commands.CreateWarehouse, uow: unit_of_work.AbstractUnitOfWork):
     with uow:
-        print(cmd.reference)
-        uow.repo.add(Warehouse(cmd.reference))
+        uow.warehouses.add(Warehouse(cmd.reference))
         uow.logger.add(events.WarehouseCreated(
             wh_name=cmd.reference
         ))
         uow.commit()
 
+def persist_warehouse(cmd: commands.CreateWarehouse, uow: unit_of_work.AbstractUnitOfWork):
+    pass
 
 def allocate_space(cmd: commands.AllocateSpace, uow: unit_of_work.AbstractUnitOfWork):
     space = Space(cmd.space_reference, cmd.max_weight, cmd.max_vol)
@@ -29,7 +29,6 @@ def allocate_space(cmd: commands.AllocateSpace, uow: unit_of_work.AbstractUnitOf
         uow.logger.add(events.SpaceAllocated(
             space_ref=cmd.space_reference
         ))
-
 
 def allocate_product(cmd: commands.AllocateProduct, uow: unit_of_work.AbstractUnitOfWork):
     order_line = OrderLine(

@@ -9,3 +9,5 @@ class NotAssignedSpaceException(Exception): pass
 
 
 class EmptyWarehouseReference(Exception): pass
+
+class WrongSpaceException(Exception):pass

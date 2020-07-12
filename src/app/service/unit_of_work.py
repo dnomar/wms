@@ -1,6 +1,7 @@
 import abc
 from src.app.adapters import repository, file_exporter
 from src.app.adapters.fakes.fake_warehouse_repository import FakeWarehouseRepository
+from src.app.adapters.fakes.fake_loggin_repository import FakeLogginRepository
 from src.app.adapters.repository import AbstractRepository
 
 
@@ -56,16 +57,20 @@ class TxtExportUnitOfWork(AbstractExportUnitOfWork):
 
 
 class FakeWarehouseUnitOfWork(AbstractUnitOfWork):
+    warehouses = FakeWarehouseRepository()
+    logger = FakeWarehouseRepository()
+
+    def __init__(self):
+        self.committed=False
 
     def __enter__(self):
-        self.repo=FakeWarehouseRepository()
-        return super().__enter__()
+        pass
         
     def __exit__(self, *args):
         pass
 
     def commit(self):
-        pass
+        self.committed=True
 
     def rollback(self):
         pass

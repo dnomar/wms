@@ -4,7 +4,7 @@ from src.app.adapters.fakes.fake_loggin_repository import FakeLogginRepository
 from src.app.adapters.fakes.fake_warehouse_repository import FakeWarehouseRepository
 
 
-"""class FakeWarehouseUnitOfWork(AbstractWarehouseUnitOfWork):
+class FakeWarehouseUnitOfWork(AbstractWarehouseUnitOfWork):
 
     def __init__(self):
         self.warehouses = FakeWarehouseRepository()
@@ -15,4 +15,4 @@ from src.app.adapters.fakes.fake_warehouse_repository import FakeWarehouseReposi
         self.committed = True
 
     def rollback(self):
-        pass"""
+        pass
