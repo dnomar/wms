@@ -1,6 +1,5 @@
 from src.app.domain.space import Space
 from src.app.domain.exceptions import NotEmpty, EmptyWarehouseReference
-#from src.app.service import messagebus
 
 
 class Warehouse:

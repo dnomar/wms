@@ -1,7 +1,7 @@
 from src.app.domain.exceptions import CantBeAllocated, NotEmpty, NotAssignedSpaceException, EmptyWarehouseReference
 from src.app.domain.orderLine import OrderLine
 from src.app.domain.space import Space
-from src.app.domain.warehouse import Warehouse
+from src.app.domain.model.warehouse import Warehouse
 from src.app.domain.product import Product
 from src.app.service.allocation_service import allocate
 from src.app.service.deallocation_service import deallocate
