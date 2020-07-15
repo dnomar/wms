@@ -1,4 +1,5 @@
 from src.app.domain.event_store import EventStore
+from src.app.infrastructure.service.event.dict_event_transformer import DictEventTransformer
 from src.app.domain.events import Event
 
 #Singleton
@@ -12,11 +13,15 @@ class InMemoryEventStore(EventStore):
         return cls._instance
     
     def append(self, event:Event):
-        self._event_store.append(event)
+        dict_event=DictEventTransformer(event)
+        self._event_store.append(dict_event)
     
     def all_events_since(self, event_id:int):
-        return self._event_store
+        events_since=[x for x in self._event_store if self._event_store.index(x)>=event_id]
+        return events_since
 
+    def get_event(self, event_id:int):
+        return self._event_store[event_id]
 
 
 
