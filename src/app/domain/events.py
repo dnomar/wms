@@ -14,12 +14,6 @@ class Event:
     def event_name(self):
         return type(self).__name__
 
-
-@dataclass
-class WarehouseCreated(Event):
-    wh_name: str
-
-
 @dataclass
 class UserCreated(Event):
     event_id: str

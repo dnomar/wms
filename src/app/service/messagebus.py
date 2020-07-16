@@ -2,11 +2,12 @@ from typing import Union
 from src.app.domain import events, commands
 from src.app.service import handlers
 from src.app.service.unit_of_work import AbstractUnitOfWork
+from src.app.domain.model.bodega.bodega_created import BodegaCreated
 
 Message = Union[commands.Command, events.Event]
 
 HANDLERS_EVENTS = {
-    events.WarehouseCreated: [handlers.send_warehouse_created_notification],
+    BodegaCreated: [handlers.send_warehouse_created_notification],
     events.UserCreated: [handlers.send_warehouse_created_notification],
 }
 

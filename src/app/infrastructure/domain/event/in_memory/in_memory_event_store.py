@@ -23,5 +23,6 @@ class InMemoryEventStore(EventStore):
     def get_event(self, event_id:int):
         return self._event_store[event_id]
 
-
+    def clear_all(self):
+        self._event_store=[]
 

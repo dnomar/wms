@@ -4,16 +4,17 @@ from src.app.domain.space import Space
 from src.app.domain.model.warehouse import Warehouse
 from src.app.service import unit_of_work
 from src.app.adapters.fakes.fakemail import FakeMail
+from src.app.domain.model.bodega.bodega_created import BodegaCreated
 
 
-def send_warehouse_created_notification(event: events.WarehouseCreated):
+def send_warehouse_created_notification(event: BodegaCreated):
     fkm = FakeMail()
     fkm.send("volivaresh@gmail.com", f"algo pal body {event.occurred_on}")
 
 def create_warehouse(cmd: commands.CreateWarehouse, uow: unit_of_work.AbstractUnitOfWork):
     with uow:
         uow.warehouses.add(Warehouse(cmd.reference))
-        uow.logger.add(events.WarehouseCreated(
+        uow.logger.add(BodegaCreated(
             wh_name=cmd.reference
         ))
         uow.commit()

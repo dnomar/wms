@@ -1,11 +1,11 @@
 from src.app.infrastructure.service.event.dict_event_transformer import DictEventTransformer
-from src.app.domain.model.bodega.warehouse_created import WarehouseCreated
+from src.app.domain.model.bodega.bodega_created import BodegaCreated
 import json
 
 def test_dict_event_transformer_return_the_right_dto_structure():
 
     #setup
-    test_event=WarehouseCreated(id="id-1")
+    test_event=BodegaCreated(id="id-1")
 
     #testing_case
     dict_event=DictEventTransformer(test_event).toDict()
@@ -25,7 +25,7 @@ def test_dict_event_transformer_return_the_right_dto_structure():
 def test_dict_event_transformer_return_the_right_json_structure():
 
     #setup
-    test_event=WarehouseCreated(id="id-1")
+    test_event=BodegaCreated(id="id-1")
 
     #testing_case
     json_event=DictEventTransformer(test_event).toJson()

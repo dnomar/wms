@@ -1,6 +1,6 @@
 from src.app.domain.model.bodega.bodega_id import BodegaId
 from src.app.domain.model.shared.domain_event_publisher import DomainEventPublisher 
-from src.app.domain.model.bodega.warehouse_created import WarehouseCreated
+from src.app.domain.model.bodega.bodega_created import BodegaCreated
 
 class Bodega:
 
@@ -16,7 +16,7 @@ class Bodega:
         return self._name
     
     def _publish_event(self):
-        DomainEventPublisher().publish(WarehouseCreated(self._id))
+        DomainEventPublisher().publish(BodegaCreated(self._id))
 
     #TODO: Pending .build to raise an Event
 

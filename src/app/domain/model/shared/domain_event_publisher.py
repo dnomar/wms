@@ -10,7 +10,7 @@ class DomainEventPublisher:
         if not cls._instance:
             cls._instance = object.__new__(cls, *args, **kwargs)
             cls._instance.HANDLERS={
-                'WarehouseCreated':[DomainEventSuscriber(InMemoryEventStore).add]
+                'BodegaCreated':[DomainEventSuscriber(InMemoryEventStore).add]
                 }
         return cls._instance
 
