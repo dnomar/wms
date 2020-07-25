@@ -1,3 +1,5 @@
+import sys
+sys.path.append(r"C:\Users\vlonc_000\Documents\08 code\wms")
 from src.app.infrastructure.domain.event.in_memory.in_memory_event_store import InMemoryEventStore
 from src.app.domain.model.bodega.bodega import Bodega
 from src.app.application.service.bodega.new_bodega_usecase import NewBodegaUseCase

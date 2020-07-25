@@ -1,8 +1,5 @@
 import sys
 sys.path.append(r"C:\Users\van-gerald.olivares\Documents\08 Code\wms")
-from  src.app.application.service.bodega.new_bodega_usecase import NewBodegaUseCase
-from src.app.infrastructure.domain.bodega.in_memory.in_memory_bodega_repository import InMemoryBodegaRepository
-from src.app.application.service.bodega.bodega_request import BodegaRequest
 from flask import Flask, jsonify, request, Response
 
 
@@ -34,4 +31,8 @@ def get_version():
     return jsonify(data), 200
 
 if __name__=="__main__":
-    print(sys.path)
+   app.run(
+       host="0.0.0.0",
+       port=5000,
+       debug=True
+   )

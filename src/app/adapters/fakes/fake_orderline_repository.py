@@ -1,5 +1,5 @@
 from src.app.adapters.repository import AbstractRepository
-from src.app.domain.orderLine import OrderLine
+from src.app.domain.orderline import OrderLine
 
 
 class FakeOrderLineRepository(AbstractRepository):
