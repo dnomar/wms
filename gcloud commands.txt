@@ -1,0 +1,9 @@
+$ gcloud auth login : 
+    Loggearse
+
+$ gcloud config set account ACCOUNT :
+    If you have already logged in with a different account:
+
+$ gcloud config set project PROJECT_ID
+    Your current project is [None].  You can change this setting by running:
+  
