@@ -8,25 +8,26 @@ from src.app.domain.model.shared.exceptions import NonExistingWarehouseException
 from src.app.domain.model.bodega.bodega import Bodega
 import pytest
 
-#FIXME: Failed Test
+
 def test_allocate_new_space():
     bodega_repo = InMemoryBodegaRepository()
     espacio_repo = InMemoryEspacioRepository()
-    wh_id = 'Bodega-123456'
+    bodega = Bodega('Bodega-123456')
+    wh_id= bodega.get_id()
     space_name = 'space-1'
     space_maximum_volume = 10
     space_maximum_weight = 100  
-    bodega_repo.append(Bodega(wh_id))
+    bodega_repo.append(bodega)
     NewSpaceUseCase(bodega_repo,espacio_repo).execute(AllocateEspacioRequest(wh_id, space_name, space_maximum_volume, space_maximum_weight))
-    assert True
+    assert False #FIXME: Assert the real things
     
 def test_allocate_new_space_in_empty_warehouse_throws_NonExistingWarehouseException():
     bodega_repo = InMemoryBodegaRepository()
     espacio_repo = InMemoryEspacioRepository()
-    wh_id = 'Bodega-123456'
+    wh_name = 'Bodega-123456'
     space_name = 'space-1'
     space_maximum_volume = 10
     space_maximum_weight = 100  
-    with pytest.raises(NonExistingWarehouseException, match=wh_id):
-        NewSpaceUseCase(bodega_repo,espacio_repo).execute(AllocateEspacioRequest(wh_id, space_name, space_maximum_volume, space_maximum_weight))
+    with pytest.raises(NonExistingWarehouseException, match=wh_name):
+        NewSpaceUseCase(bodega_repo,espacio_repo).execute(AllocateEspacioRequest(wh_name, space_name, space_maximum_volume, space_maximum_weight))
     

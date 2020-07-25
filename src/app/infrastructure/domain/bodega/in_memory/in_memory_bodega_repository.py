@@ -14,6 +14,10 @@ class InMemoryBodegaRepository(BodegaRepository):
             if x.get_id() == bodega_id:
                 return x
     
+    def find_by_name(self, bodega_name:str)->Bodega:
+        for x in self._bodegas:
+            if x.get_name() == bodega_name:
+                return x
     
     def number_elements(self):
         print(len(self._bodegas))

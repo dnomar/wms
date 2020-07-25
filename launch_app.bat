@@ -1,1 +1,1 @@
-python ./src/entrypoints/api/api.py
+python -m src.entrypoints.api.api

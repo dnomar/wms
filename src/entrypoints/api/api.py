@@ -1,8 +1,10 @@
-import sys
-sys.path.append(r"C:\Users\van-gerald.olivares\Documents\08 Code\wms")
 from flask import Flask, jsonify, request, Response
 from src.app.application.service.espacio.new_space_usecase import NewSpaceUseCase
-from src.app.application.service.espacio.allocate_space_request import AllocateSpaceRequest
+from src.app.application.service.espacio.allocate_espacio_request import AllocateEspacioRequest
+from src.app.application.service.bodega.new_bodega_usecase import NewBodegaUseCase
+from src.app.infrastructure.domain.bodega.in_memory.in_memory_bodega_repository import InMemoryBodegaRepository
+from src.app.application.service.bodega.bodega_request import BodegaRequest
+from src.app.infrastructure.domain.espacio.in_memory.in_memory_espacio_repository import InMemoryEspacioRepository
 
 app = Flask(__name__)
 
@@ -19,7 +21,7 @@ def allocate_space():
     space_name = request.json['space_name']
     space_maximum_volume = request.json['space_maximum_volume']
     space_maximum_weight = request.json['space_maximum_weight']
-    allocated_space=NewSpaceUseCase().execute(AllocateSpaceRequest(warehouse_id, space_name, space_maximum_volume, space_maximum_weight)  )
+    allocated_space=NewSpaceUseCase(InMemoryBodegaRepository(), InMemoryEspacioRepository()).execute(AllocateEspacioRequest(warehouse_id, space_name, space_maximum_volume, space_maximum_weight)  )
     return f"El espacio {allocated_space.space_name()} ha sido asignado a la bodega {allocated_space.wh_name()}", 201
 
 """ @app.route("/hello_world", methods=['GET'])
@@ -47,12 +49,8 @@ def get_version():
     return jsonify(data), 200
 
 if __name__=="__main__":
-<<<<<<< HEAD
    app.run(
        host="0.0.0.0",
        port=5000,
        debug=True
    )
-=======
-    app.run(host="0.0.0.0", port=5000, debug=True)
->>>>>>> f54b197ef2165530a73ffce1181ccc6d900bf53a

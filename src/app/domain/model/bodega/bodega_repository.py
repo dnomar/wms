@@ -14,5 +14,9 @@ class BodegaRepository(abc.ABC):
         raise NotImplementedError
 
     @abc.abstractmethod
+    def find_by_name(self, bodega_name:str)->Bodega:
+        raise NotImplementedError
+
+    @abc.abstractmethod
     def number_elements(self):
         raise NotImplementedError

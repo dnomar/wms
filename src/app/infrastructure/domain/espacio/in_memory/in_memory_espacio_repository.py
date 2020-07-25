@@ -11,7 +11,14 @@ class InMemoryEspacioRepository(EspacioRepository):
         self._espacio.add(espacio)
 
     def find_by_id(self, espacio_id:str)->Espacio:
-        return [x for x in self._espacio if x.get_id()==espacio_id]
+        for x in self._espacio:
+            if x.get_id()==espacio_id:
+                return x
+        
+    def find_by_name(self, espacio_name:str)->Espacio:
+        for x in self._espacio:
+            if x.get_name()==espacio_name:
+                return x
     
     def number_elements(self):
         print(len(self._espacio))
