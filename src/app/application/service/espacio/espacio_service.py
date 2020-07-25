@@ -4,12 +4,16 @@ from src.app.domain.model.espacio.espacio import Espacio
 from src.app.domain.model.espacio.espacio_repository import EspacioRepository
 from src.app.domain.exceptions import NonExistingWarehouseException
 
+
 class EspacioService:
 
-    def find_bodega_id_or_fail(self, bodega_id:str)->Bodega:
-        pass
+    def __init__(self, bod_repo:BodegaRepository, espacio_repo:EspacioRepository):
+        self._bod_repo = bod_repo
+        self._espacio_repo = espacio_repo
 
-    def find_espacio_or_fail(self, espacio_id:str)->Espacio:
-        pass
+    def find_bodega(self, bodega_id:str)->Bodega:
+        return self._bod_repo.find_by_id(bodega_id)
 
+    def find_espacio(self, espacio_id:str)->Espacio:
+        return self._espacio_repo.find_by_id(espacio_id)
 

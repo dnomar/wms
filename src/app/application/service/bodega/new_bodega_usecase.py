@@ -1,5 +1,6 @@
 from src.app.domain.model.bodega.bodega_repository import BodegaRepository
 from src.app.application.service.bodega.bodega_request import BodegaRequest
+from src.app.application.service.bodega.bodega_dto import BodegaDTO
 from src.app.domain.model.bodega.bodega import Bodega
 
 class NewBodegaUseCase:
@@ -11,4 +12,5 @@ class NewBodegaUseCase:
     def execute(self, request:BodegaRequest):
         new_bodega = Bodega(request.get_name())
         self.repo.append(new_bodega)
+        return BodegaDTO(new_bodega)
 

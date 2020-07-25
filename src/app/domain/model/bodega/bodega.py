@@ -1,6 +1,7 @@
 from src.app.domain.model.bodega.bodega_id import BodegaId
-from src.app.domain.model.shared.domain_event_publisher import DomainEventPublisher 
 from src.app.domain.model.bodega.bodega_created import BodegaCreated
+from src.app.domain.model.shared.domain_event_publisher import DomainEventPublisher
+
 
 class Bodega:
 
