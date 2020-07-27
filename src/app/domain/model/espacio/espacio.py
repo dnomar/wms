@@ -15,3 +15,6 @@ class Espacio:
     
     def _publish_event(self):
         DomainEventPublisher().publish(EspacioCreated(self._name))
+    
+    def get_name(self):
+        return self._name

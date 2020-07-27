@@ -9,7 +9,7 @@ class InMemoryEspacioService:
     def __init__(self):
         self._bodega_repo=InMemoryBodegaRepository()
 
-    def find_bodega_id_or_fail(self, bodega_id:str)->Bodega:
+    def find_bodega_by_id_id_or_fail(self, bodega_id:str)->Bodega:
         tempo_bodega=self._bodega_repo.find_by_id(bodega_id)
         if not tempo_bodega:
             raise NonExistingWarehouseException

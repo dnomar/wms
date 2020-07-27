@@ -7,3 +7,6 @@ class BodegaDTO:
     
     def name(self):
         return self._bodega.get_name()
+
+    def getId(self):
+        return self._bodega.get_id()

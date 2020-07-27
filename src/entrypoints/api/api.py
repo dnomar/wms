@@ -5,8 +5,10 @@ from src.app.application.service.bodega.new_bodega_usecase import NewBodegaUseCa
 from src.app.infrastructure.domain.bodega.in_memory.in_memory_bodega_repository import InMemoryBodegaRepository
 from src.app.application.service.bodega.bodega_request import BodegaRequest
 from src.app.infrastructure.domain.espacio.in_memory.in_memory_espacio_repository import InMemoryEspacioRepository
+from src.app.application.service.get_warehouse_id_by_name_usecase import GetWarehouseIdUseCase
 
 app = Flask(__name__)
+
 
 @app.route("/create-warehouse", methods=['POST'])
 def create_warehouse():
@@ -21,23 +23,15 @@ def allocate_space():
     space_name = request.json['space_name']
     space_maximum_volume = request.json['space_maximum_volume']
     space_maximum_weight = request.json['space_maximum_weight']
-    allocated_space=NewSpaceUseCase(InMemoryBodegaRepository(), InMemoryEspacioRepository()).execute(AllocateEspacioRequest(warehouse_id, space_name, space_maximum_volume, space_maximum_weight)  )
-    return f"El espacio {allocated_space.space_name()} ha sido asignado a la bodega {allocated_space.wh_name()}", 201
+    allocate_space_rqst=AllocateEspacioRequest(warehouse_id, space_name, space_maximum_volume, space_maximum_weight)
+    allocated_space=NewSpaceUseCase(InMemoryBodegaRepository(), InMemoryEspacioRepository()).execute(allocate_space_rqst)
+    return "OK", 201
 
-""" @app.route("/hello_world", methods=['GET'])
-def allocate_endpoint():
-    return jsonify({"message": "hello world"}), 200
-
-
-@app.route("/create_warehouse", methods=['POST'])
-def create_warehouse():
-    wh_ref = request.json['wh_ref']
-    NewBodegaUseCase(InMemoryBodegaRepository()).execute(BodegaRequest(wh_ref))
-    return 'OK', 201
-
-@app.route("/get_wh_master", methods=['POST'])
-def get_warehouse_master():
-    pass """
+@app.route("/warehouse-id/<warehousename>", methods=['GET'])
+def get_warehouse_id_by_name(warehousename):
+    warehouse_id=GetWarehouseIdUseCase(InMemoryBodegaRepository()).execute(warehousename)
+    if warehouse_id is None: return 404
+    return warehouse_id, 200
 
 @app.route("/", methods=['GET'])
 def get_version():

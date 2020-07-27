@@ -18,6 +18,7 @@ class InMemoryEventStore(EventStore):
     
     def all_events_since(self, event_id:int):
         events_since=[x for x in self._event_store if self._event_store.index(x)>=event_id]
+        print(events_since)
         return events_since
 
     def get_event(self, event_id:int):

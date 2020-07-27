@@ -11,9 +11,9 @@ class EspacioService:
         self._bod_repo = bod_repo
         self._espacio_repo = espacio_repo
 
-    def find_bodega(self, bodega_id:str)->Bodega:
+    def find_bodega_by_id(self, bodega_id:str)->Bodega:
         return self._bod_repo.find_by_id(bodega_id)
 
-    def find_espacio(self, espacio_name:str)->Espacio:
+    def find_espacio_by_name(self, espacio_name:str)->Espacio:
         return self._espacio_repo.find_by_name(espacio_name)
 

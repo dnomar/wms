@@ -9,9 +9,17 @@ from src.app.infrastructure.domain.bodega.in_memory.in_memory_bodega_repository 
 
 def test_make_new_bodega_usecase():
     repository=InMemoryBodegaRepository()
-    new_bodega=NewBodegaUseCase(repository)
-    new_bodega.execute(BodegaRequest("bodega-generica"))
-    assert repository.number_elements() == 1
-    assert len(InMemoryEventStore().all_events_since(0)) == 1
+    repository.clear_all()
+    InMemoryEventStore().clear_all()
+    new_bodega_uc=NewBodegaUseCase(repository)
+    new_bodega_uc.execute(BodegaRequest("bodega-generica-1"))
+    new_bodega_uc.execute(BodegaRequest("bodega-generica-2"))
+    new_bodega_uc.execute(BodegaRequest("bodega-generica-3"))
+    assert repository.number_elements() == 3
+    assert len(InMemoryEventStore().all_events_since(0)) == 3
     InMemoryEventStore().clear_all()
     repository.clear_all()
+    
+
+
+#TODO: Exception when add more than one bodega with the same name 

@@ -15,13 +15,16 @@ class NewSpaceUseCase:
 
 
     def execute(self, request:AllocateEspacioRequest):
-        wh_id=self._espacio_service.find_bodega(request.get_wh_id())
-        if not wh_id:
+        print(f"La request que debe ser el id ... {request.get_wh_id()}")
+        wh_id=self._espacio_service.find_bodega_by_id(request.get_wh_id())
+        print(f"WH ID ...{wh_id}")
+        if wh_id is None:
+            print(f"WH ID 2 ...{wh_id}")
             raise NonExistingWarehouseException(f"La Bodega indicada {request.get_wh_id()} no existe")
-        space_name=self._espacio_service.find_espacio(request.get_space_name())
-        print(space_name)
+        space_name=self._espacio_service.find_espacio_by_name(request.get_space_name())
         if space_name is not None:
             raise SpaceAlreadyExistException  (f"El espacio {request.get_space_name()} indicado ya existe")
         new_espacio = Espacio(request.get_space_name(), request.get_max_volume(), request.get_max_weight(), request.get_wh_id())
+        self._espacio_repo.append(new_espacio)
         return EspacioDTO(new_espacio)
 

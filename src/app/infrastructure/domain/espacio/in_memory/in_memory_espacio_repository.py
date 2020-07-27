@@ -21,7 +21,7 @@ class InMemoryEspacioRepository(EspacioRepository):
                 return x
     
     def number_elements(self):
-        print(len(self._espacio))
+        print(f"Number of elements ... {len(self._espacio)}")
         return len(self._espacio)
 
     def clear_all(self):
